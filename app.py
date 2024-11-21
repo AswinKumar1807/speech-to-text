@@ -118,7 +118,7 @@ class App(ctk.CTk):
         self.server_thread.start()
 
         # Open the website URL in the browser using subprocess
-        self.browser_process = subprocess.Popen(["python", "-m", "webbrowser", self.website_url])
+        # self.browser_process = subprocess.Popen(["python", "-m", "webbrowser", self.website_url])
 
         # Add a button to open the URL if it's not already opened
         self.open_button = ctk.CTkButton(self, text="Open Textify in Browser", command=self.open_in_browser)

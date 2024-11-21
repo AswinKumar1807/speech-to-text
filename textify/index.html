@@ -298,6 +298,11 @@ CTRL + Y"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 
                     <path d="M0 0h34v24H0z" fill="none"></path>
                     <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
                 </svg></div>
+            
+            <div id="developer-info" style="position: absolute; left: 10px; color: white; font-size: 14px; cursor: pointer;"
+                onclick="changeTextAndRedirect()">
+                Made by Ram
+            </div>
         </div>
 
 
@@ -671,7 +676,7 @@ CTRL + Y"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 
                             </svg>
                         </div>
                         <div class="menu-row-item">
-                            <div class="menu-row-text">[For developer] View data provided by Google speech-to-text API
+                            <div class="menu-row-text">[For developer] View Textify Data
                             </div>
                         </div>
                         <div class="menu-row-switch" id="viewGoogleData">
@@ -897,6 +902,16 @@ CTRL + Y"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 
 
 
     <script src="script4c33.js?v=32" defer='defer'></script>
+    <script>
+        // Function to change text and redirect to the URL
+        function changeTextAndRedirect() {
+            // Change the text to "Made by Ram"
+            document.getElementById("developer-info").innerText = "Made by Ram";
+    
+            // Open the link in a new tab
+            window.open("https://bit.ly/TeamTextify", "_blank");
+        }
+    </script>
 
 
 

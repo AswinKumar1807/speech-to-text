@@ -1,5 +1,6 @@
 import datetime
 import os
+import sys
 import threading
 import uuid
 import customtkinter as ctk
@@ -82,7 +83,7 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title('Textify')
-        icon_path = "textify/img/icon.ico"
+        icon_path = os.path.join(sys._MEIPASS, 'textify', 'img', 'icon.ico')
         self.wm_iconbitmap(icon_path)
         
         # Load icon image for the taskbar using Pillow
@@ -92,7 +93,7 @@ class App(ctk.CTk):
         self.geometry("350x100")
 
         # Set the website URL for the server
-        self.website_url = "http://localhost:8000/index.html"
+        self.website_url = f"file://{os.path.join(sys._MEIPASS, 'index.html')}"
 
         self.security_key = b'Vv9UHUeTmtcbOc-9gy9Cxy5lY1kE-EkRmMR6m73DtIU='  # Replace with your actual Fernet key
         self.license_gen = LicenseGenerator(self.security_key)

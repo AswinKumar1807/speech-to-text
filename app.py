@@ -3,14 +3,12 @@ import os
 import sys
 import threading
 import uuid
+import webbrowser
 import customtkinter as ctk
 from tkinter import messagebox
 from cryptography.fernet import Fernet
 from PIL import Image, ImageTk
-from http.server import SimpleHTTPRequestHandler, HTTPServer
-import webbrowser
-import subprocess
-import signal
+from flask import Flask, render_template, send_from_directory
 
 class LicenseGenerator:
     def __init__(self, security_key: bytes):
@@ -83,21 +81,27 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title('Textify')
-        icon_path = os.path.join(sys._MEIPASS, 'textify', 'img', 'icon.ico')
+        # icon_path = 'static\img\icon.ico'
+        icon_path = os.path.join(sys._MEIPASS, 'static', 'img', 'icon.ico')
         self.wm_iconbitmap(icon_path)
         
         # Load icon image for the taskbar using Pillow
         icon_image = Image.open(icon_path)
         icon_photo = ImageTk.PhotoImage(icon_image)
         self.iconphoto(True, icon_photo)
-        self.geometry("350x100")
+        self.geometry("350x150")
 
-        # Set the website URL for the server
-        self.website_url = f"file://{os.path.join(sys._MEIPASS, 'index.html')}"
+        # Flask app initialization
+        self.flask_app = Flask(__name__)
+        self.setup_routes()
+
+        # Set the Flask server URL
+        self.website_url = "http://localhost:8000"
 
         self.security_key = b'Vv9UHUeTmtcbOc-9gy9Cxy5lY1kE-EkRmMR6m73DtIU='  # Replace with your actual Fernet key
         self.license_gen = LicenseGenerator(self.security_key)
 
+        # Validate the license
         if not self.validate_license():
             self.prompt_for_license_key()
             if not self.validate_license():
@@ -105,49 +109,37 @@ class App(ctk.CTk):
                 self.destroy()
                 return
 
-        # Initialize the application
-        self.start_server()
+        # Start the Flask server
+        self.start_flask_server()
 
-    def start_server(self):
-        """Start a temporary HTTP server to serve the HTML page."""
-        def serve():
-            os.chdir(os.path.abspath("."))  # Set working directory
-            self.httpd = HTTPServer(("localhost", 8000), SimpleHTTPRequestHandler)
-            self.httpd.serve_forever()
-
-        self.server_thread = threading.Thread(target=serve, daemon=True)
-        self.server_thread.start()
-
-        # Open the website URL in the browser using subprocess
-        # self.browser_process = subprocess.Popen(["python", "-m", "webbrowser", self.website_url])
-
-        # Add a button to open the URL if it's not already opened
+        # Add UI elements
         self.open_button = ctk.CTkButton(self, text="Open Textify in Browser", command=self.open_in_browser)
         self.open_button.pack(pady=10)
 
         # Add a label displaying the website URL
-        self.url_label = ctk.CTkLabel(self, text=f"Website URL: {self.website_url}")
+        self.url_label = ctk.CTkLabel(self, text=f"Website URL: http://localhost:8000")
         self.url_label.pack(pady=10)
 
+    def setup_routes(self):
+        """Define Flask routes for serving files."""
+        @self.flask_app.route('/')
+        def index():
+            return render_template('index.html')
+
+    def start_flask_server(self):
+        """Start the Flask server in a separate thread."""
+        def run():
+            self.flask_app.run(host='localhost', port=8000, debug=False, use_reloader=False)
+
+        self.flask_thread = threading.Thread(target=run, daemon=True)
+        self.flask_thread.start()
+
     def open_in_browser(self):
-        """Open the website URL in the default web browser."""
+        """Open the Flask server URL in the default web browser."""
         webbrowser.open(self.website_url)
 
-    def stop_server(self):
-        """Stop the temporary HTTP server."""
-        if self.httpd:
-            self.httpd.shutdown()
-            self.server_thread.join()
-
-    def stop_browser(self):
-        """Close the browser process."""
-        if self.browser_process:
-            os.kill(self.browser_process.pid, signal.SIGTERM)
-
     def on_closing(self):
-        """Override the default close behavior to stop the server and browser."""
-        self.stop_server()
-        self.stop_browser()
+        """Override the default close behavior."""
         self.destroy()
 
     def get_mac_address(self) -> str:
@@ -177,6 +169,7 @@ class App(ctk.CTk):
     def on_license_key_entered(self, license_key: str):
         with open("license.txt", "w") as file:
             file.write(license_key)
+
 
 if __name__ == "__main__":
     app = App()

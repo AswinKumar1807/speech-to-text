@@ -5,7 +5,7 @@
 <!-- Mirrored from www.speechtexter.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 13 Nov 2024 07:51:37 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
 <head>
-    <link rel="stylesheet" href="style8e5e.css?v=15">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style8e5e.css') }}?v=15">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,9 +21,9 @@
         content="Speech to text converter. Dictate with your voice. Free web app for typing with your voice. Over 70 different languages supported!" />
     <meta name="keywords" content="voice to text, speech to text, type, voice, dictate, speech" />
 
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="img/icon_192.png">
-    <link rel="icon" href="img\icon_192.png"><!-- 32×32 -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}?v=1">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/icon_192.png') }}?v=1">
+    <link rel="icon" href="{{ url_for('static', filename='img/icon_192.png') }}?v=1">
     <!-- <link rel="icon" href="/icon.svg" type="image/svg+xml">-->
 
     <!--   ======== Open Graph ============================  -->
@@ -55,7 +55,9 @@
                     <div id="logo">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                              viewBox="0 0 1024 1024">
-                            <image xlink:href="img/icon_192.png" x="0" y="0" width="1024" height="1024" />
+                             <image xlink:href="{{ url_for('static', filename='img/icon_192.png') }}" 
+                                href="{{ url_for('static', filename='img/icon_192.png') }}" 
+                                x="0" y="0" width="1024" height="1024" />
                         </svg>
                     </div>
                     
@@ -901,7 +903,8 @@ CTRL + Y"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 
 
 
 
-    <script src="script4c33.js?v=32" defer='defer'></script>
+    <script src="{{ url_for('static', filename='script4c33.js') }}?v=32" defer></script>
+
     <script>
         // Function to change text and redirect to the URL
         function changeTextAndRedirect() {

@@ -1,41 +1,33 @@
-import subprocess
 import os
+import subprocess
 
-def run_pyinstaller():
-    # Define the paths for your assets and Python script
-    icon_path = r"D:/Aswin Projects/Personal/Selenium/video to text converter/textify/img/icon.ico"
-    gif_path1 = r"D:/Aswin Projects/Personal/Selenium/video to text converter/backblue.gif"
-    gif_path2 = r"D:/Aswin Projects/Personal/Selenium/video to text converter/fade.gif"
-    log_path = r"D:/Aswin Projects/Personal/Selenium/video to text converter/hts-log.txt"
-    html_path = r"D:/Aswin Projects/Personal/Selenium/video to text converter/index.html"
-    cache_path = r"D:/Aswin Projects/Personal/Selenium/video to text converter/hts-cache"
-    pagead_path = r"D:/Aswin Projects/Personal/Selenium/video to text converter/pagead2.googlesyndication.com"
-    textify_path = r"D:/Aswin Projects/Personal/Selenium/video to text converter/textify"
-    webpage_path = r"D:/Aswin Projects/Personal/Selenium/video to text converter/webpage"
-    app_path = r"D:/Aswin Projects/Personal/Selenium/video to text converter/app.py"
+def build_executable():
+    # Define paths
+    project_dir = r"D:\Aswin Projects\Personal\Selenium\video to text converter"
+    main_script = os.path.join(project_dir, "Textify.py")
+    icon_path = os.path.join(project_dir, "static", "img", "icon.ico")
+    static_dir = os.path.join(project_dir, "static")
+    templates_dir = os.path.join(project_dir, "templates")
 
-    # Define the PyInstaller command and arguments
+    # Construct the PyInstaller command
     pyinstaller_cmd = [
-        'pyinstaller',
-        '--noconfirm', '--onefile', '--windowed',
-        f'--icon={icon_path}',
-        f'--add-data={gif_path1};.',
-        f'--add-data={gif_path2};.',
-        f'--add-data={log_path};.',
-        f'--add-data={html_path};.',
-        f'--add-data={cache_path};hts-cache/',
-        f'--add-data={pagead_path};pagead2.googlesyndication.com/',
-        f'--add-data={textify_path};textify/',
-        app_path
+        "pyinstaller",
+        "--noconfirm",
+        "--onefile",
+        "--windowed",
+        f"--icon={icon_path}",
+        f"--add-data={static_dir};static/",
+        f"--add-data={templates_dir};templates/",
+        main_script
     ]
 
     # Run the PyInstaller command
-    print("Running PyInstaller...")
     try:
+        print("Building executable...")
         subprocess.run(pyinstaller_cmd, check=True)
-        print("Build completed successfully!")
+        print("Build completed successfully. Check the 'dist' directory for the executable.")
     except subprocess.CalledProcessError as e:
-        print(f"Error during build process: {e}")
+        print(f"Build failed: {e}")
 
 if __name__ == "__main__":
-    run_pyinstaller()
+    build_executable()

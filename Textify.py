@@ -89,7 +89,7 @@ class App(ctk.CTk):
         icon_image = Image.open(icon_path)
         icon_photo = ImageTk.PhotoImage(icon_image)
         self.iconphoto(True, icon_photo)
-        self.geometry("350x150")
+        self.geometry("350x100")
 
         # Flask app initialization
         self.flask_app = Flask(__name__)
@@ -113,12 +113,12 @@ class App(ctk.CTk):
         self.start_flask_server()
 
         # Add UI elements
-        self.open_button = ctk.CTkButton(self, text="Open Textify in Browser", command=self.open_in_browser)
-        self.open_button.pack(pady=10)
+        self.open_button = ctk.CTkButton(self, text="Click Here To Open Textify In The Browser", command=self.open_in_browser)
+        self.open_button.pack(pady=30)
 
-        # Add a label displaying the website URL
-        self.url_label = ctk.CTkLabel(self, text=f"Website URL: http://localhost:8000")
-        self.url_label.pack(pady=10)
+        # # Add a label displaying the website URL
+        # self.url_label = ctk.CTkLabel(self, text=f"Website URL: http://localhost:8000")
+        # self.url_label.pack(pady=10)
 
     def setup_routes(self):
         """Define Flask routes for serving files."""

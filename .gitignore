@@ -1,0 +1,6 @@
+.venv
+build
+dist
+output
+Textify.spec
+license.txt
